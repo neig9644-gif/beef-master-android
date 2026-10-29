@@ -8,9 +8,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+
+      - name: Extract source ZIP
+        run: unzip -o beef_master_android_project.zip
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -27,10 +31,11 @@ jobs:
           gradle-version: '8.9'
 
       - name: Build APK
+        working-directory: beef_master_android
         run: gradle assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: beef-master-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: beef_master_android/app/build/outputs/apk/debug/*.apk
